@@ -13,7 +13,7 @@ pipeline {
         // Docker_Token = credentials('dockerhub-token')
         
            Sonar_token = credentials('sonarqube-token')
-        // Snyk_token = credentials('snyk-token')
+           Snyk_token = credentials('snyk-token')
 
         // Pat_token = credentials('github-pat')
 
@@ -51,6 +51,16 @@ pipeline {
              }
             }
           }
+        }
+        stage('Snyk analysis'){
+            steps{
+                sh '''
+                  npm ci
+                  npm install -g snyk
+                  snyk auth $SNYK_TOKEN
+                  snyk test --severity-threshold=high
+                '''
+            }
         }
     }
 }
