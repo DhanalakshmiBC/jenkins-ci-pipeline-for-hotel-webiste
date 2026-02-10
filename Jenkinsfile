@@ -42,7 +42,7 @@ pipeline {
                 withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
                 sh '''
                   $SCANNER_HOME/bin/sonar-scanner \
-                    -Dsonar.projectKey=DhanalakshmiBC_dockerHub-ECR-push-pipeline \
+                    -Dsonar.projectKey=DhanalakshmiBC_jenkins-ci-pipeline-for-hotel-webiste \
                     -Dsonar.organization=dhanalakshmibc \
                     -Dsonar.sources=. \
                     -Dsonar.host.url=https://sonarcloud.io \
