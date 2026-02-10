@@ -5,6 +5,7 @@ pipeline {
         githubPush()
     }
     environment{
+        SCANNER_HOME = tool 'sonar-scanner'
         Node_Version = '18'
         // Image_tag = "${env.GIT_COMMIT}"
         
@@ -37,18 +38,19 @@ pipeline {
         }
         stage('Sonar Analysis'){
             steps {
+              withSonarQubeEnv('sonarqube-server') {
+                withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
                 sh '''
-                wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
-                  unzip sonar-scanner-cli-5.0.1.3006-linux.zip
-                  export PATH=$PWD/sonar-scanner-5.0.1.3006-linux/bin:$PATH
-                  sonar-scanner \
+                  $SCANNER_HOME/bin/sonar-scanner \
                     -Dsonar.projectKey=DhanalakshmiBC_dockerHub-ECR-push-pipeline \
                     -Dsonar.organization=dhanalakshmibc \
                     -Dsonar.sources=. \
                     -Dsonar.host.url=https://sonarcloud.io \
-                    -Dsonar.login=$Sonar_token
+                    -Dsonar.login=$SONAR_TOKEN
                 '''
+             }
             }
+          }
         }
     }
 }
