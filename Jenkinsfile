@@ -1,6 +1,9 @@
 pipeline {
     agent any
 
+    triggers {
+        githubPush()
+    }
     environment{
         Node_Version = '18'
         // Image_tag = "${env.GIT_COMMIT}"
